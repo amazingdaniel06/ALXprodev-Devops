@@ -1,1 +1,16 @@
+#!/bin/bash
+# Task 1: Extract Pokémon data using jq, awk, sed
 
+DATA_FILE="data.json"
+
+if [[ ! -f "$DATA_FILE" ]]; then
+    echo "Error: $DATA_FILE not found."
+    exit 1
+fi
+
+NAME=$(jq -r '.name' "$DATA_FILE" | sed 's/.*/\u&/')
+HEIGHT=$(jq -r '.height' "$DATA_FILE" | awk '{printf "%.1f", $1/10}')
+WEIGHT=$(jq -r '.weight' "$DATA_FILE" | awk '{printf "%.1f", $1/10}')
+TYPE=$(jq -r '.types[0].type.name' "$DATA_FILE" | sed 's/.*/\u&/')
+
+echo "$NAME is of type $TYPE, weighs ${WEIGHT}kg, and is ${HEIGHT}m tall."
