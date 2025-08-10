@@ -8,9 +8,11 @@ if [[ ! -f "$DATA_FILE" ]]; then
     exit 1
 fi
 
-NAME=$(jq -r '.name' "$DATA_FILE" | sed 's/.*/\u&/')
-HEIGHT=$(jq -r '.height' "$DATA_FILE" | awk '{printf "%.1f", $1/10}')
-WEIGHT=$(jq -r '.weight' "$DATA_FILE" | awk '{printf "%.1f", $1/10}')
-TYPE=$(jq -r '.types[0].type.name' "$DATA_FILE" | sed 's/.*/\u&/')
+# Extract and format variables
+name=$(jq -r '.name' "$DATA_FILE" | sed 's/.*/\u&/')
+formatted_height=$(jq -r '.height' "$DATA_FILE" | awk '{printf "%.1f", $1/10}')
+formatted_weight=$(jq -r '.weight' "$DATA_FILE" | awk '{printf "%.1f", $1/10}')
+type=$(jq -r '.types[0].type.name' "$DATA_FILE" | sed 's/.*/\u&/')
 
-echo "$NAME is of type $TYPE, weighs ${WEIGHT}kg, and is ${HEIGHT}m tall."
+# Required exact output format
+echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall."
